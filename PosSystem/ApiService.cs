@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace PosSystem
 {
@@ -23,15 +21,10 @@ namespace PosSystem
             return await response.Content.ReadAsStringAsync();
         }
 
-        public async Task<string> AddProduct(object product)
+        public async Task DeleteProduct(string id)
         {
-            string body = JsonConvert.SerializeObject(product);
-            var content = new StringContent(body, Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync("products", content);
+            var response = await client.DeleteAsync("products/" + id);
             response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsStringAsync();
         }
     }
 }
