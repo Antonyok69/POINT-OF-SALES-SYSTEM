@@ -84,7 +84,8 @@ namespace PosSystem
 
             int i = 0;
             cn.Open();
-            cm = new SqlCommand("select * from vwCriticalItems", cn);
+            ApiService api = new ApiService();
+            string productsJson = await api.GetProducts();
             dr = cm.ExecuteReader();
             while (dr.Read())
             {
