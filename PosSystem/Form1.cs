@@ -1,26 +1,17 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace PosSystem
 {
     public partial class Form1 : Form
     {
-        SqlConnection cn = new SqlConnection();
-        SqlCommand cm = new SqlCommand();
-        DBConnection dbcon = new DBConnection();
-        SqlDataReader dr;
-
         public string _pass, _user;
 
         public Form1()
         {
             InitializeComponent();
 
-            // Temporary dummy connection while Laravel API integration is ongoing
-            cn = new SqlConnection(dbcon.MyConnection());
-
-            // Disabled first para dili mo-error sa startup
+            // SQL Server disabled while migrating to Laravel API
             // NotifyCriticalItems();
         }
 
@@ -30,7 +21,7 @@ namespace PosSystem
 
         public void NotifyCriticalItems()
         {
-            // Temporary disabled while replacing SQL Server with Laravel API
+            // Disabled while replacing SQL Server with Laravel API
         }
 
         private void btnBrand_Click(object sender, EventArgs e)
@@ -48,7 +39,10 @@ namespace PosSystem
             frm.TopLevel = false;
             panel3.Controls.Add(frm);
             frm.BringToFront();
-            frm.LoadCategory();
+
+            // Disabled while SQL Server is being removed
+            // frm.LoadCategory();
+
             frm.Show();
         }
 
@@ -58,7 +52,10 @@ namespace PosSystem
             frm.TopLevel = false;
             panel3.Controls.Add(frm);
             frm.BringToFront();
-            frm.LoadRecords();
+
+            // Disabled while SQL Server is being removed
+            // frm.LoadRecords();
+
             frm.Show();
         }
 
@@ -124,10 +121,11 @@ namespace PosSystem
             f.TopLevel = false;
             panel3.Controls.Add(f);
 
-            f.lblDailySales.Text = dbcon.DailySales().ToString("#,##0.00");
-            f.lblProduct.Text = dbcon.ProductLine().ToString();
-            f.lblStock.Text = dbcon.StockOnHand().ToString();
-            f.lblCriticalItems.Text = dbcon.CraticalItems().ToString();
+            // Temporary values while Laravel API dashboard is not yet connected
+            f.lblDailySales.Text = "0.00";
+            f.lblProduct.Text = "0";
+            f.lblStock.Text = "0";
+            f.lblCriticalItems.Text = "0";
 
             f.BringToFront();
             f.Show();
