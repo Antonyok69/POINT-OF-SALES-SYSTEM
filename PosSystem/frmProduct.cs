@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace PosSystem
 {
@@ -66,54 +67,41 @@ namespace PosSystem
         {
 
         }
-
-        private void btnSave_Click(object sender, EventArgs e)
+private async void btnSave_Click(object sender, EventArgs e)
+{
+    try
+    {
+        if (MessageBox.Show("Are you sure you want to save this product?",
+            "Save product",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question) == DialogResult.Yes)
         {
-            try
+            ApiService api = new ApiService();
+
+            var product = new
             {
-                if (MessageBox.Show("Are you sure you want to save this product?", "Save product", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    string bid = ""; string cid = "";
-                    cn.Open();
-                    cm = new SqlCommand("select id from BrandTbl where brand like '" + comboBox1.Text + "'", cn);
-                    dr = cm.ExecuteReader();
-                    dr.Read();
-                    if (dr.HasRows) { bid = dr[0].ToString(); }
-                    dr.Close();
-                    cn.Close();
+                name = txtPdesc.Text,
+                description = txtPdesc.Text,
+                price = double.Parse(txtPrice.Text),
+                quantity = int.Parse(txtReOrder.Text),
+                gender = "Unisex",
+                image = ""
+            };
 
-                    cn.Open();
-                    cm = new SqlCommand("select id from TblCatecory where category like '" + comboBox2.Text + "'", cn);
-                    dr = cm.ExecuteReader();
-                    dr.Read();
-                    if (dr.HasRows) { cid = dr[0].ToString(); }
-                    dr.Close();
-                    cn.Close();
+            await api.AddProduct(product);
 
+            MessageBox.Show("Product saved to Laravel MySQL!");
 
+            Clear();
 
-                    cn.Open();
-                    cm = new SqlCommand("INSERT INTO TblProduct1 (pcode,barcode,pdesc,bid,cid,price,reorder) VALUES(@pcode,@barcode,@pdesc,@bid,@cid,@price,@reorder)", cn);
-                    cm.Parameters.AddWithValue("@pcode", TxtPcode.Text);
-                    cm.Parameters.AddWithValue("@barcode", txtBarcode.Text);
-                    cm.Parameters.AddWithValue("@pdesc", txtPdesc.Text);
-                    cm.Parameters.AddWithValue("@bid", bid);
-                    cm.Parameters.AddWithValue("@cid", cid);
-                    cm.Parameters.AddWithValue("@price",double.Parse( txtPrice.Text));
-                    cm.Parameters.AddWithValue("@reorder",int.Parse( txtReOrder.Text));
-                    cm.ExecuteNonQuery();
-                    cn.Close();
-                    MessageBox.Show("Product has been successfully saved");
-                    Clear();
-                    flist.LoadRecords();
-
-                }
-            } catch (Exception ex)
-            {
-                cn.Close();
-                MessageBox.Show(ex.Message);
-            }
+            flist.LoadRecords();
         }
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show(ex.Message);
+    }
+}
         public void Clear()
         {
             txtPrice.Clear();

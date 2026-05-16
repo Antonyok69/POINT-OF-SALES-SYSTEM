@@ -1,29 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SqlClient;
-
-namespace PosSystem
+﻿namespace PosSystem
 {
     public class DBConnection
     {
-        SqlConnection cn = new SqlConnection();
-        SqlCommand cm = new SqlCommand();
-        SqlDataReader dr;
-        private double dailySales;
-        private int productline;
-        private int Stockonhand;
-        private int craticalitems;
-        private string con;
-
         public string MyConnection()
         {
-          
-
+            return @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=DummyDB;Integrated Security=True";
         }
-      
-    
-    
+
+        public double DailySales()
+        {
+            return 0;
+        }
+
+        public int ProductLine()
+        {
+            return 0;
+        }
+
+        public int StockOnHand()
+        {
+            return 0;
+        }
+
+        public int CraticalItems()
+        {
+            return 0;
+        }
+
+        public double GetVal()
+        {
+            return 0;
+        }
+    }
 }
